@@ -159,6 +159,8 @@ which.workspace = true
 zeromq.workspace = true
 zstd.workspace = true
 
+rspack_core = { workspace = true }
+
 [target.'cfg(windows)'.dependencies]
 junction.workspace = true
 winapi = { workspace = true, features = ["knownfolders", "mswsock", "objbase", "shlobj", "tlhelp32", "winbase", "winerror", "winsock2"] }
