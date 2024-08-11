@@ -229,6 +229,11 @@ rspack_plugin_entry = { version = "0.1.0" }
 rspack_fs = { version = "0.1.0" }
 
 
+
+[patch.crates-io]
+deno_ast = { git="https://github.com/hardfist/deno_ast", branch = "yj/concurrent_ast"}
+
+
 # NB: the `bench` and `release` profiles must remain EXACTLY the same.
 [profile.release]
 codegen-units = 1

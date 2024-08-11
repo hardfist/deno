@@ -1319,8 +1319,7 @@ dependencies = [
 [[package]]
 name = "deno_ast"
 version = "0.41.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a8207814a257d99164dbf780a73b9dee17af4db983f4b23ffbf20c7340d52f5"
+source = "git+https://github.com/hardfist/deno_ast?branch=yj/concurrent_ast#f8265c4041c1673268f6bd999dffb4b8ca768952"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
