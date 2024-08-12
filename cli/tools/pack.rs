@@ -19,7 +19,7 @@ pub async fn pack(
 ) -> Result<(), AnyError> {
   log::info!(
     "{}",
-    colors::yellow("⚠️ Warning: `deno bundle` is deprecated and will be removed in Deno 2.0.\nUse an alternative bundler like \"deno_emit\", \"esbuild\" or \"rollup\" instead."),
+    colors::yellow("⚠️ Using Rspack to Bundle"),
   );
     let factory = CliFactory::from_flags(flags);
     rspack(factory, &bundle_flags).await?;
