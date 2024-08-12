@@ -105,10 +105,13 @@ async fn run_subcommand(flags: Arc<Flags>) -> Result<i32, AnyError> {
         tools::bench::run_benchmarks(flags, bench_flags).await
       }
     }),
-    DenoSubcommand::Bundle(bundle_flags) => spawn_subcommand(async {
-      //tools::bundle::bundle(flags, bundle_flags).await
-      tools::pack::pack(flags, bundle_flags).await
-    }),
+    DenoSubcommand::Bundle(bundle_flags) => {
+      let result = tokio::spawn(async move {
+        //tools::bundle::bundle(flags, bundle_flags).await
+        tools::pack::pack(flags, bundle_flags).await
+      }).await;
+      return result.map(|_| 0).map_err(|e|e.into());
+    },
     DenoSubcommand::Doc(doc_flags) => {
       spawn_subcommand(async { tools::doc::doc(flags, doc_flags).await })
     }
