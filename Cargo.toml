@@ -225,6 +225,7 @@ rspack_error = { version = "0.1.0"}
 rspack_core = { version = "0.1.0"}
 rspack_plugin_entry = { version = "0.1.0" }
 rspack_fs = { version = "0.1.0" }
+rspack_plugin_runtime  = { version = "0.1.0"}
 
 
 

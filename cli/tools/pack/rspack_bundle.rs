@@ -6,6 +6,7 @@ use rspack_core::JavascriptParserOptions;
 use rspack_core::ModuleType;
 use rspack_core::ParserOptions;
 use rspack_core::ParserOptionsByModuleType;
+use rspack_plugin_runtime::{RuntimePlugin};
 use rspack_core::{
     CacheOptions, ChunkLoading, ChunkLoadingType, Compiler, CompilerOptions, Context,
     CrossOriginLoading, DevServerOptions, EntryOptions, Environment, Experiments, Filename,
@@ -17,7 +18,6 @@ use rspack_fs::AsyncNativeFileSystem;
 use rspack_plugin_entry::EntryPlugin;
 use rspack_plugin_javascript::JsPlugin;
 use rspack_plugin_schemes::DataUriPlugin;
-use std::fs;
 use crate::{CliFactory};
 use crate::args::BundleFlags;
 
@@ -52,7 +52,7 @@ pub async fn rspack(
             unique_name: "main".into(),
             chunk_loading: ChunkLoading::Enable(ChunkLoadingType::Import),
             chunk_loading_global: String::new(),
-            filename: Filename::from(String::from("[name].js")),
+            filename: Filename::from(String::from(bundle_flags.out_file.clone().unwrap_or("output.js".to_string()))),
             chunk_filename: Filename::from(String::from("[id].js")),
             cross_origin_loading: CrossOriginLoading::Disable,
             css_filename: Filename::from(String::from("[name].css")),
@@ -154,6 +154,7 @@ pub async fn rspack(
     plugins.push(Box::<NaturalChunkIdsPlugin>::default());
     plugins.push(Box::<NamedModuleIdsPlugin>::default());
     plugins.push(Box::<DataUriPlugin>::default());
+    plugins.push(Box::<RuntimePlugin>::default());
     let mut compiler = Compiler::new(options, plugins, output_filesystem, None,None);
     compiler.build().await.expect("build failed");
     Ok(())

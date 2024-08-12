@@ -167,6 +167,7 @@ rspack_error = { workspace = true}
 rspack_core = { workspace = true}
 rspack_plugin_entry = { workspace =true }
 rspack_fs = { workspace=true}
+rspack_plugin_runtime = { workspace = true}
 swc_core = { version = "0.99.6"}
 
 [target.'cfg(windows)'.dependencies]
