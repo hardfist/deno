@@ -107,7 +107,8 @@ async fn run_subcommand(flags: Arc<Flags>) -> Result<i32, AnyError> {
       }
     }),
     DenoSubcommand::Bundle(bundle_flags) => spawn_subcommand(async {
-      tools::bundle::bundle(flags, bundle_flags).await
+      //tools::bundle::bundle(flags, bundle_flags).await
+      tools::pack::pack(flags, bundle_flags).await
     }),
     DenoSubcommand::Doc(doc_flags) => {
       spawn_subcommand(async { tools::doc::doc(flags, doc_flags).await })

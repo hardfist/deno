@@ -1,4 +1,5 @@
 use std::path::Path;
+use deno_core::error::AnyError;
 use rspack_ids::NaturalChunkIdsPlugin;
 use rspack_ids::NamedModuleIdsPlugin;
 use rspack_core::JavascriptParserOptions;
@@ -6,7 +7,7 @@ use rspack_core::ModuleType;
 use rspack_core::ParserOptions;
 use rspack_core::ParserOptionsByModuleType;
 use rspack_core::{
-    Builtins, CacheOptions, ChunkLoading, ChunkLoadingType, Compiler, CompilerOptions, Context,
+    CacheOptions, ChunkLoading, ChunkLoadingType, Compiler, CompilerOptions, Context,
     CrossOriginLoading, DevServerOptions, EntryOptions, Environment, Experiments, Filename,
     HashDigest, HashFunction, HashSalt, MangleExportsOption, Mode, ModuleOptions, Optimization,
     OutputOptions, PathInfo, Plugin, PublicPath, Resolve, SideEffectOption, SnapshotOptions,
@@ -16,35 +17,32 @@ use rspack_fs::AsyncNativeFileSystem;
 use rspack_plugin_entry::EntryPlugin;
 use rspack_plugin_javascript::JsPlugin;
 use rspack_plugin_schemes::DataUriPlugin;
-use serde_json::Map;
-use serde_json::Value;
 use std::fs;
+use crate::{CliFactory};
+use crate::args::BundleFlags;
 
-
-async fn pack() {
+pub async fn rspack(
+    factory: CliFactory,
+    bundle_flags: &BundleFlags,
+) -> Result<(), AnyError> {
     let output_filesystem = AsyncNativeFileSystem {};
-    let root = env!("CARGO_MANIFEST_DIR");
-    let context = Context::new(root.to_string());
-    let dist: std::path::PathBuf = Path::new(root).join("./dist");
-    if !dist.exists() {
-        fs::create_dir_all(&dist).expect("Failed to create dist directory");
-    }
-    let dist = dist.canonicalize().unwrap();
-    let entry_request: String = Path::new(root)
-        .join("./fixtures/index.js")
+    let root = std::env::current_dir().unwrap();
+    let context = Context::from(root.clone());
+    let entry_request: String = root
+        .join(bundle_flags.source_file.clone())
         .canonicalize()
         .unwrap()
         .to_string_lossy()
         .to_string();
     let options = CompilerOptions {
-        context: root.into(),
+        context: Context::from(root.clone()),
         dev_server: DevServerOptions::default(),
         output: OutputOptions {
             chunk_load_timeout: Default::default(),
             charset: Default::default(),
             css_head_data_compression: Default::default(),
             import_meta_name: Default::default(),
-            path: dist,
+            path: root.clone(),
             pathinfo: PathInfo::Bool(false),
             clean: false,
             public_path: PublicPath::Auto,
@@ -85,7 +83,7 @@ async fn pack() {
                 arrow_function: Some(true),
             },
         },
-        target: Target::new(&vec!["es2022".to_string()]).unwrap(),
+        target: Target::new(&vec!["es2022".to_string(), "node".to_string()]).unwrap(),
         mode: Mode::Development,
         resolve: Resolve {
             extensions: Some(vec![".js".to_string()]),
@@ -133,7 +131,7 @@ async fn pack() {
         },
         profile: false,
         bail: false,
-        __references: Map::<String, Value>::new(),
+        __references:Default::default(),
         node: None,
     };
     let mut plugins: Vec<Box<dyn Plugin>> = Vec::new();
@@ -156,6 +154,7 @@ async fn pack() {
     plugins.push(Box::<NaturalChunkIdsPlugin>::default());
     plugins.push(Box::<NamedModuleIdsPlugin>::default());
     plugins.push(Box::<DataUriPlugin>::default());
-    let mut compiler = Compiler::new(options, plugins, output_filesystem);
+    let mut compiler = Compiler::new(options, plugins, output_filesystem, None,None);
     compiler.build().await.expect("build failed");
+    Ok(())
 }
