@@ -220,8 +220,6 @@ winres = "=0.1.12"
 # rspack deps
 rspack_plugin_schemes= { version = "0.1.0"}
 rspack_ids= {  version="0.1.0"}
-rspack_binding_options= { version = "0.1.0"}
-rspack_hook= { version = "0.1.0"}
 rspack_plugin_javascript= { version = "0.1.0" }
 rspack_error = { version = "0.1.0"}
 rspack_core = { version = "0.1.0"}

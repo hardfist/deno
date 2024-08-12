@@ -159,7 +159,14 @@ which.workspace = true
 zeromq.workspace = true
 zstd.workspace = true
 
-rspack_core = { workspace = true }
+# rspack deps
+rspack_plugin_schemes= { workspace = true}
+rspack_ids= {  workspace = true}
+rspack_plugin_javascript= { workspace=true}
+rspack_error = { workspace = true}
+rspack_core = { workspace = true}
+rspack_plugin_entry = { workspace =true }
+rspack_fs = { workspace=true}
 
 [target.'cfg(windows)'.dependencies]
 junction.workspace = true
