@@ -230,7 +230,9 @@ rspack_plugin_runtime  = { version = "0.1.0"}
 
 
 [patch.crates-io]
+# patch to use Arc instead of Lrc to support concurrent
 deno_ast = { git="https://github.com/hardfist/deno_ast", branch = "yj/concurrent_ast"}
+deno_emit = { git="https://github.com/hardfist/deno_emit", branch = "concurrent"}
 
 
 # NB: the `bench` and `release` profiles must remain EXACTLY the same.
