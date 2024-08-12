@@ -1,5 +1,7 @@
 use std::path::Path;
+use std::sync::Arc;
 use deno_core::error::AnyError;
+use rspack_core::ResolverFactory;
 use rspack_ids::NaturalChunkIdsPlugin;
 use rspack_ids::NamedModuleIdsPlugin;
 use rspack_core::JavascriptParserOptions;
@@ -148,6 +150,7 @@ pub async fn rspack(
         depend_on: None,
         layer: Default::default(),
     };
+    
     let entry_plugin = Box::new(EntryPlugin::new(context, entry_request, plugin_options));
     plugins.push(Box::<JsPlugin>::default());
     plugins.push(entry_plugin);
@@ -155,7 +158,9 @@ pub async fn rspack(
     plugins.push(Box::<NamedModuleIdsPlugin>::default());
     plugins.push(Box::<DataUriPlugin>::default());
     plugins.push(Box::<RuntimePlugin>::default());
-    let mut compiler = Compiler::new(options, plugins, output_filesystem, None,None);
+    let resolver_factory = Arc::new(ResolverFactory::new(options.resolve.clone()));
+    let loader_resolver_factory = Arc::new(ResolverFactory::new(options.resolve_loader.clone()));
+    let mut compiler = Compiler::new(options, plugins, output_filesystem, resolver_factory, loader_resolver_factory);
     compiler.build().await.expect("build failed");
     Ok(())
 }
