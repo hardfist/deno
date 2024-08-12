@@ -1,5 +1,4 @@
 // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
-
 use std::path::PathBuf;
 use std::sync::Arc;
 
@@ -15,7 +14,7 @@ use crate::factory::CliFactory;
 use crate::graph_util::error_for_any_npm_specifier;
 use crate::util;
 use crate::util::display;
-
+#[allow(dead_code)]
 pub async fn bundle(
   flags: Arc<Flags>,
   bundle_flags: BundleFlags,

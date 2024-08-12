@@ -45,7 +45,7 @@ regex.workspace = true
 reqwest.workspace = true
 rustls-pemfile.workspace = true
 rustls-tokio-stream.workspace = true
-semver = "=1.0.14"
+semver = "1.0.14"
 serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true

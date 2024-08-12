@@ -26,7 +26,8 @@ pub fn create_basic_runtime() -> tokio::runtime::Runtime {
   let (event_interval, global_queue_interval, max_io_events_per_tick) =
     tokio_configuration();
 
-  tokio::runtime::Builder::new_current_thread()
+  tokio::runtime::Builder::new_multi_thread()
+  
     .enable_io()
     .enable_time()
     .event_interval(tokio_env("DENO_TOKIO_EVENT_INTERVAL", event_interval))
