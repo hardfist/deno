@@ -1,4 +1,3 @@
-use std::path::Path;
 use std::sync::Arc;
 use deno_core::error::AnyError;
 use rspack_core::ResolverFactory;
@@ -24,7 +23,7 @@ use crate::{CliFactory};
 use crate::args::BundleFlags;
 
 pub async fn rspack(
-    factory: CliFactory,
+    _factory: CliFactory,
     bundle_flags: &BundleFlags,
 ) -> Result<(), AnyError> {
     let output_filesystem = AsyncNativeFileSystem {};

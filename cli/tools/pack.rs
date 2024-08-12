@@ -11,7 +11,6 @@ use crate::args::BundleFlags;
 use crate::args::Flags;
 
 use crate::factory::CliFactory;
-use crate::util;
 use crate::tools::pack::rspack_bundle::rspack;
 pub async fn pack(
   flags: Arc<Flags>,

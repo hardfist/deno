@@ -14,7 +14,7 @@ use crate::factory::CliFactory;
 use crate::graph_util::error_for_any_npm_specifier;
 use crate::util;
 use crate::util::display;
-
+#[allow(dead_code)]
 pub async fn bundle(
   flags: Arc<Flags>,
   bundle_flags: BundleFlags,
